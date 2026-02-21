@@ -43,7 +43,8 @@
   --chart-3: 45 100% 40%;
   --chart-4: 271 91% 35%;
   --chart-5: 0 84% 40%;
-  --font-sans: Open Sans, sans-serif;
+  --font-sans: 'Open Sans', sans-serif;
+  --font-heading: 'Poppins', sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: Menlo, monospace;
   --radius: .5rem;

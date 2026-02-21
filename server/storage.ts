@@ -1,38 +1,36 @@
-import { type User, type InsertUser } from "@shared/schema";
-import { randomUUID } from "crypto";
-
-// modify the interface with any CRUD methods
-// you might need
+import {
+  type Tournament, type InsertTournament,
+  type GalleryImage, type InsertGalleryImage,
+  tournaments, galleryImages,
+} from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  getTournaments(): Promise<Tournament[]>;
+  createTournament(tournament: InsertTournament): Promise<Tournament>;
+  getGalleryImages(): Promise<GalleryImage[]>;
+  createGalleryImage(image: InsertGalleryImage): Promise<GalleryImage>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-
-  constructor() {
-    this.users = new Map();
+export class DatabaseStorage implements IStorage {
+  async getTournaments(): Promise<Tournament[]> {
+    return db.select().from(tournaments);
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+  async createTournament(tournament: InsertTournament): Promise<Tournament> {
+    const [result] = await db.insert(tournaments).values(tournament).returning();
+    return result;
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+  async getGalleryImages(): Promise<GalleryImage[]> {
+    return db.select().from(galleryImages);
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+  async createGalleryImage(image: InsertGalleryImage): Promise<GalleryImage> {
+    const [result] = await db.insert(galleryImages).values(image).returning();
+    return result;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
