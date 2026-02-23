@@ -1,15 +1,13 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar, MapPin, Clock, DollarSign, Trophy, Phone, Sparkles } from "lucide-react";
-import type { Tournament } from "@shared/schema";
+import type { Tournament } from "@/data/content";
 
 interface TournamentsProps {
   tournaments: Tournament[];
-  isLoading: boolean;
 }
 
-export function Tournaments({ tournaments, isLoading }: TournamentsProps) {
+export function Tournaments({ tournaments }: TournamentsProps) {
   return (
     <section id="tournaments" className="py-24 bg-[#FAFAFA] dark:bg-muted/30 relative overflow-hidden" data-testid="section-tournaments">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#2E7D32] via-[#FFB300] to-[#1976D2]" />
@@ -31,18 +29,7 @@ export function Tournaments({ tournaments, isLoading }: TournamentsProps) {
           </p>
         </div>
 
-        {isLoading ? (
-          <div className="grid md:grid-cols-2 gap-8">
-            {[1, 2].map((i) => (
-              <Card key={i} className="p-6 border-card-border rounded-2xl">
-                <Skeleton className="h-52 w-full rounded-xl mb-5" />
-                <Skeleton className="h-7 w-3/4 mb-3" />
-                <Skeleton className="h-4 w-full mb-2" />
-                <Skeleton className="h-4 w-2/3" />
-              </Card>
-            ))}
-          </div>
-        ) : tournaments.length === 0 ? (
+        {tournaments.length === 0 ? (
           <div className="text-center py-20">
             <div className="w-20 h-20 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-5">
               <Trophy className="w-10 h-10 text-muted-foreground" />

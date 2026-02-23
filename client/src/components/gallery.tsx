@@ -1,14 +1,12 @@
 import { useState } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 import { X, ZoomIn, Camera } from "lucide-react";
-import type { GalleryImage } from "@shared/schema";
+import type { GalleryImage } from "@/data/content";
 
 interface GalleryProps {
   images: GalleryImage[];
-  isLoading: boolean;
 }
 
-export function Gallery({ images, isLoading }: GalleryProps) {
+export function Gallery({ images }: GalleryProps) {
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
 
   return (
@@ -31,13 +29,7 @@ export function Gallery({ images, isLoading }: GalleryProps) {
           </p>
         </div>
 
-        {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <Skeleton key={i} className="h-80 rounded-2xl" />
-            ))}
-          </div>
-        ) : images.length === 0 ? (
+        {images.length === 0 ? (
           <div className="text-center py-20">
             <div className="w-20 h-20 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-5">
               <Camera className="w-10 h-10 text-muted-foreground" />
